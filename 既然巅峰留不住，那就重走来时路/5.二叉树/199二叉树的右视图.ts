@@ -13,15 +13,28 @@
  */
 // 199. 二叉树的右视图
 function rightSideView(root: TreeNode | null): number[] {
-    const ans = [];
-    const dfs = (node, depth) => {
-        if (!node) return;
-        if (depth === ans.length) { // 这个深度首次访问
-            ans.push(node.val);
-        }
-        dfs(node.right, depth + 1); // 先递归右子树，保证首次遇到的一定是最右边的节点
-        dfs(node.left, depth + 1);
-    }
-    dfs(root, 0);
-    return ans;
-};
+	const ans: number[] = [];
+	if (!root) return ans;
+
+	const queue = [root];
+
+	while (queue.length !== 0) {
+		const levelSize = queue.length; // 记住这一层有多少个节点(用之前学过的固定值技巧)
+
+		for (let i = 0; i < levelSize; i++) {
+			const node = queue.shift();
+
+			if (i === levelSize - 1) {
+				// 这一层最后一个被处理的节点,就是最靠右的那个
+				ans.push(node.val);
+			}
+
+			if (node.left) queue.push(node.left);
+			if (node.right) queue.push(node.right);
+		}
+	}
+
+	return ans;
+}
+
+// BFS

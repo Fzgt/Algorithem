@@ -1,12 +1,16 @@
 // 105. 从前序与中序遍历序列构造二叉树
 function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
-    if (inorder.length == 0) return null;
-    const root = new TreeNode(preorder[0]);
-    const mid = inorder.indexOf(preorder[0]);
-    root.left = buildTree(preorder.slice(1, mid + 1), inorder.slice(0, mid));
-    root.right = buildTree(preorder.slice(mid + 1), inorder.slice(mid + 1));
-    return root;
-};
+	if (inorder.length == 0) return null;
+	// 先序遍历数组第一个元素是根节点
+	const root = new TreeNode(preorder[0]);
+	// 找到根节点在中序遍历数组中的位置
+	const mid = inorder.indexOf(preorder[0]);
+	// preorder.slice(1, mid + 1)是左子树的前序遍历，inorder.slice(0, mid)是左子树的中序遍历
+	root.left = buildTree(preorder.slice(1, mid + 1), inorder.slice(0, mid));
+	// preorder.slice(mid + 1)是右子树的前序遍历，inorder.slice(mid + 1)是右子树的中序遍历
+	root.right = buildTree(preorder.slice(mid + 1), inorder.slice(mid + 1));
+	return root;
+}
 
 // root.left = buildTree(preorder.slice(1, mid + 1), inorder.slice(0, mid));
 // root.right = buildTree(preorder.slice(mid + 1), inorder.slice(mid + 1));

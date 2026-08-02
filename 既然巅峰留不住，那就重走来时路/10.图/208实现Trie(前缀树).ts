@@ -1,41 +1,40 @@
 // 208. 实现Trie（前缀树）
 class Trie {
-    private children: Record<string, any>;
+	private children: Record<string, any>;
+	constructor() {
+		this.children = {};
+	}
 
-    constructor() {
-        this.children = {};
-    }
+	insert(word: string): void {
+		let node = this.children;
+		for (const char of word) {
+			if (!node[char]) {
+				node[char] = {};
+			}
+			node = node[char];
+		}
+		node.isEnd = true;
+	}
 
-    insert(word: string): void {
-        let node = this.children;
-        for (const ch of word) {
-            if (!node[ch]) {
-                node[ch] = {};
-            }
-            node = node[ch];
-        }
-        node.isEnd = true;
-    }
+	search(word: string): boolean {
+		const node = this.searchPrefix(word);
+		return !!(node && node.isEnd);
+	}
 
-    search(word: string): boolean {
-        const node = this.searchPrefix(word);
-        return node !== false && node.isEnd === true;
-    }
+	startsWith(prefix: string): boolean {
+		return !!this.searchPrefix(prefix);
+	}
 
-    startsWith(prefix: string): boolean {
-        return this.searchPrefix(prefix) !== false;
-    }
-
-    private searchPrefix(prefix: string): any {
-        let node = this.children;
-        for (const ch of prefix) {
-            if (!node[ch]) {
-                return false;
-            }
-            node = node[ch];
-        }
-        return node;
-    }
+	private searchPrefix(prefix: string) {
+		let node = this.children;
+		for (const char of prefix) {
+			if (!node[char]) {
+				return false;
+			}
+			node = node[char];
+		}
+		return node;
+	}
 }
 
 // 如果我们插入了"cat"和"car"，Trie结构会是：
